@@ -143,3 +143,7 @@ function(req, res) {
   return(input_data)
 }
 
+# Start the Plumber API
+pr <- plumber::plumb("api_json.R")
+pr$run(host = "0.0.0.0", port = 8000)
+

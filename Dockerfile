@@ -1,11 +1,8 @@
-FROM rocker/r-plumber
+FROM rocker/r-plumber:4.2.2
 
-# Copy your API file into the container
-COPY . /app
+COPY API_PART /app
 WORKDIR /app
 
-# Expose the port the API will run on
 EXPOSE 8000
 
-# Run the API file directly
 CMD ["Rscript", "api_json.R"]

@@ -5,7 +5,7 @@ library(tm)
 # library(caret)
 # library(readr)
 # library(openxlsx)
-library(stringdist)
+ library(stringdist)
 
 # Load the trained model
 model_rf <- readRDS("APImodel_1.rds")

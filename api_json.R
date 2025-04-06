@@ -1,11 +1,7 @@
 library(plumber)
-# library(tidyverse)
 library(stringr)
 library(tm)
-# library(caret)
-# library(readr)
-# library(openxlsx)
- library(stringdist)
+library(stringdist)
 
 # Load the trained model
 model_rf <- readRDS("APImodel_1.rds")
@@ -54,7 +50,6 @@ predictScore <- function(model_answer, student_answer) {
   return(rounded_score)
 }
 
-# API Endpoint: Single Question-Answer Scoring
 #* @param model_answer The reference model answer
 #* @param student_answer The student's response
 #* @post /score_answer
@@ -62,7 +57,6 @@ function(model_answer, student_answer) {
   return(list(score = predictScore(model_answer, student_answer)))
 }
 
-# API Endpoint: Batch Processing (CSV Upload)
 #* @post /score_csv
 #* @parser multi
 function(req, res) {
@@ -101,7 +95,6 @@ function(req, res) {
   return(list(message = "File processed successfully!", output_file = output_file, data = df))
 }
 
-# API Endpoint: JSON Input Processing
 #* @post /score_json
 #* @param req The JSON input with questions, model answers, and student answers
 #* @parser json
@@ -111,11 +104,6 @@ function(req, res) {
     return(list(error = "No JSON data received!"))
   }
   
-  print("request body is:")
-  print(req$body)  ## remove later
-  print(colnames(req$body))
-  
-  # Parse JSON body
   input_data <- tryCatch({
     df <- as.data.frame(jsonlite::fromJSON(req$postBody, simplifyDataFrame = TRUE))
     df
@@ -123,9 +111,6 @@ function(req, res) {
     res$status <- 400
     return(list(error = "Invalid JSON format!"))
   })
-  print("parsed jason is:")
-  print(input_data)  ## remove later
-  print(colnames(input_data))
   
   required_cols <- c("Question", "Model_Answer", "Student_Answer")
   if (!all(required_cols %in% colnames(input_data))) {
@@ -133,9 +118,6 @@ function(req, res) {
     return(list(error = "JSON must contain 'Question', 'Model_Answer', 'Student_Answer'"))
   }
   
-  
-  
-  # Calculate scores
   input_data$Score <- sapply(1:nrow(input_data), function(i) {
     predictScore(input_data$Model_Answer[i], input_data$Student_Answer[i])
   })
@@ -143,7 +125,4 @@ function(req, res) {
   return(input_data)
 }
 
-# Start the Plumber API
-pr <- plumber::plumb("api_json.R")
-pr$run(host = "0.0.0.0", port = 8000)
 

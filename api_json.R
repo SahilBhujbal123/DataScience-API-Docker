@@ -2,6 +2,7 @@ library(plumber)
 library(stringr)
 library(tm)
 library(stringdist)
+library(caret)
 
 # Load the trained model
 model_rf <- readRDS("APImodel_1.rds")

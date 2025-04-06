@@ -2,7 +2,7 @@
 FROM rstudio/plumber
 
 # Install required R packages
-RUN R -e "install.packages(c('plumber', 'stringr', 'tm', 'stringdist', 'jsonlite'))"
+RUN R -e "install.packages(c('plumber', 'caret', 'stringr', 'tm', 'stringdist', 'jsonlite'))"
 
 # Copy API files to the container
 COPY api_json.R /app/api_json.R

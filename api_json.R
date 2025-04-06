@@ -3,6 +3,7 @@ library(stringr)
 library(tm)
 library(stringdist)
 library(caret)
+library(randomForest)
 
 # Load the trained model
 model_rf <- readRDS("APImodel_1.rds")
